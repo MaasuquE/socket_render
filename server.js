@@ -23,8 +23,7 @@ io.on('connection', (socket) => {
       const { domain } = decoded;
       // Store the socket object for this client
       connectedClients[domain] = socket;
-
-      // Join the room based on the domain
+      
       socket.join(domain);
       socket.emit("joinRoom",{id:domain});
       console.log(`User authenticated for domain: ${domain}`);
