@@ -46,8 +46,6 @@ io.on('connection', (socket) => {
   });
 });
 
-console.log(connectedClients);
-
 // Routes
 app.use('/auth', require('./routes/auth'));
 app.use('/orders', require('./routes/orders')(io));
