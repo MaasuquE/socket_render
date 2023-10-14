@@ -48,6 +48,8 @@ io.on('connection', (socket) => {
 // Routes
 app.use('/auth', require('./routes/auth'));
 app.use('/orders', require('./routes/orders')(io));
+app.use('/api', require('./routes/setting')(io));
+
 server.listen(3000, () => {
   console.log('Server is listening on 3000');
 });
