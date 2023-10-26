@@ -24,14 +24,17 @@ module.exports = (io, connectedClients) => {
       if (availableClients && availableClients.size > 0) {
         
         io.to(domain).emit('newOrder', { domain: domain, order_id: order });
+        console.log({ domain: domain, order_id: order });
         res.json({ message: 'Order received' });
+        
       } else {
         if (!pendingOrders[domain]) {
           pendingOrders[domain] = [];
         }
         pendingOrders[domain].push({ domain: domain, order_id: order });
         const penOrderNum = pendingOrders[domain].length;
-        res.json({ message: penOrderNum +' order(s) stored for later emission' });
+        const msg = penOrderNum +' order(s) stored for later emission';
+        res.json({ message: msg });
       }
     } catch (error) {
       console.error('JWT Verification error:', error);

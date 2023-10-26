@@ -39,11 +39,15 @@ io.on('connection', (socket) => {
           if(response.status){
             socket.join(domain);
             socket.emit("joinRoom", { id: domain });
-            console.log("Authentication success:", response.data);
-
+            
             if (!connectedClients[domain]) {
               connectedClients[domain] = new Set();
             }
+
+            const totalConnections = Object.keys(connectedClients).length;
+            console.log("Authentication success:", {"Total client connections":totalConnections,domain:domain,"response":response.data});
+
+            
             connectedClients[domain].add(socket);
             if (pendingOrders[domain] && connectedClients[domain]) {
               const orders = pendingOrders[domain];
@@ -53,7 +57,7 @@ io.on('connection', (socket) => {
               });
               pendingOrders[domain] =[];
             }
-            
+
           }
         })
         .catch((error) => {
@@ -65,14 +69,6 @@ io.on('connection', (socket) => {
   });
 
   socket.on('disconnect', () => {
-    for (const room in connectedClients) {
-      if (connectedClients[room].has(socket)) {
-        connectedClients[room].delete(socket);
-        if (connectedClients[room].size === 0) {
-          delete connectedClients[room];
-        }
-      }
-    }
     console.log('User disconnected');
   });
 });
