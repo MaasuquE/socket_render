@@ -24,22 +24,22 @@ module.exports = (io, connectedClients) => {
       if (availableClients && availableClients.size > 0) {
         
         io.to(domain).emit('newOrder', { domain: domain, order_id: order });
-        console.log({ domain: domain, order_id: order });
-        res.json({ message: 'Order received' });
-        
+        res.json({ status:true,message: 'Order received' });
+        console.log("Respose ("+domain+") : [order-id: "+ order+"]");
       } else {
         if (!pendingOrders[domain]) {
           pendingOrders[domain] = [];
         }
         pendingOrders[domain].push({ domain: domain, order_id: order });
         const penOrderNum = pendingOrders[domain].length;
-        const msg = penOrderNum +' order(s) stored for later emission';
-        res.json({ message: msg });
+        const msg =  penOrderNum +' order(s) stored for later emission';
+        res.json({status:true,message: msg});
+        console.log("Respose ("+domain+") : "+msg);
       }
     } catch (error) {
       console.error('JWT Verification error:', error);
       if (!res.headersSent) { // Check if headers have already been sent
-        res.status(401).json({ error: 'Unauthorized jwt verification' });
+        res.status(401).json({ status:false,error: 'Unauthorized jwt verification' });
       }
     }
   });

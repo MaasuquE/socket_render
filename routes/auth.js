@@ -2,15 +2,17 @@ const express = require('express');
 const jwt = require('jsonwebtoken');
 const router = express.Router();
 
-router.get('/generate-token', (req, res) => {
-  const domain = req.query.domain;
-  console.log(domain);
+router.post('/generate-token', (req, res) => {
+  const {domain , passcode} = req.body;
   if (!domain) {
-    return res.status(400).json({ error: 'Domain is required' });
+    return res.status(400).json({ status:false,error: 'Domain is required' });
+  }
+  if (passcode != 'a4fdd64c3ab11abe9f192f77f3982676') {   //// hash of @ordere!faith@
+    return res.status(401).json({ status:false,error: 'Unauthorized' });
   }
 
   const token = jwt.sign({ domain }, process.env.JWT_SECRET);
-  res.json({ token });
+  res.json({ status:true,token });
 });
 
 module.exports = router;

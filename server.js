@@ -45,7 +45,7 @@ io.on('connection', (socket) => {
             }
 
             const totalConnections = Object.keys(connectedClients).length;
-            console.log("Authentication success:", {"Total client connections":totalConnections,domain:domain,"response":response.data});
+            console.log("Authentication success:", {"Total client connections":totalConnections,"new connection":domain});
 
             
             connectedClients[domain].add(socket);
