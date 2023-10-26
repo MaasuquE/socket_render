@@ -4,6 +4,7 @@ const router = express.Router();
 
 router.post('/generate-token', (req, res) => {
   const {domain , passcode} = req.body;
+  console.log(req.body);
   if (!domain) {
     return res.status(400).json({ status:false,error: 'Domain is required' });
   }
