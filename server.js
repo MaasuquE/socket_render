@@ -69,6 +69,14 @@ io.on('connection', (socket) => {
   });
 
   socket.on('disconnect', () => {
+    for (const room in connectedClients) {
+      if (connectedClients[room].has(socket)) {
+        connectedClients[room].delete(socket);
+        if (connectedClients[room].size === 0) {
+          delete connectedClients[room];
+        }
+      }
+    }
     console.log('User disconnected');
   });
 });
